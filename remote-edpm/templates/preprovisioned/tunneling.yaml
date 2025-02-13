@@ -7,7 +7,7 @@ spec:
     - hosts: all
       strategy: linear
       tasks:
-        - name: Enable podified-repos
+        - name: Create tunnel service and start it
           become: true
           ansible.builtin.shell: |
             set -euxo pipefail

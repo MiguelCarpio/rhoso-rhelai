@@ -7,7 +7,12 @@ spec:
     - hosts: all
       strategy: linear
       tasks:
-        - name: Enable NAT for the br-ex bridge
+        - name: Install iptables service to reload rules on restart
+          ansible.builtin.package:
+            name: iptables-services
+            state: present
+
+        - name: Enable NAT for the br-ex bridge and save rules
           become: true
           ansible.builtin.shell: |
             set -euxo pipefail
@@ -15,3 +20,11 @@ spec:
             iptables -t nat -A POSTROUTING -s ${IP_ADDRESS_PREFIX}.0/24 -o ${iface} -j MASQUERADE
             iptables -A FORWARD -i br-ex -o ${iface} -j ACCEPT
             iptables -A FORWARD -i ${iface} -o br-ex -m state --state RELATED,ESTABLISHED -j ACCEPT
+            mkdir -p /etc/sysconfig
+            iptables-save -f /etc/sysconfig/iptables
+
+        - name: Enable iptables service to load saved rules
+          ansible.builtin.systemd_service:
+            name: iptables.service
+            enabled: true
+            masked: no
