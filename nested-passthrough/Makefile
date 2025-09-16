@@ -7,7 +7,7 @@ AI_NUM_GPUS ?= all
 AI_VM_NAME ?= rhel-ai
 AI_CPUS ?= 20
 AI_RAM ?= 40
-AI_DISK ?= 600
+AI_DISK ?= 500
 
 DEPLOY_CINDER ?= false
 PULL_SECRET ?= ~/pull-secret
