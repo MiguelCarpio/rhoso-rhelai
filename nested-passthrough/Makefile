@@ -171,5 +171,5 @@ cleanup_edpm: ## Delete the eDPM node
 .PHONY: cleanup_rhel_ai
 cleanup_rhel_ai: ## Delete the RHEL AI instance running in RHOSO
 	@scripts/http-serve.sh stop
-	@source $$(crc oc-env) && \
-	oc rsh openstackclient openstack server delete nvidia
+	@eval $$(crc oc-env) && \
+	oc rsh openstackclient openstack server delete rhel-ai
